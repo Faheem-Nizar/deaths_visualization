@@ -8,7 +8,7 @@ df = pd.read_csv('cause_of_deaths.csv')
 
 # Sidebar navigation
 st.sidebar.title("Navigation")
-nav_option = st.sidebar.radio("Select View", ["World Map", "Scatter Plot", "Linear Plot"])
+nav_option = st.sidebar.radio("Select View", ["World Map", "Scatter Plot", "Pie Chart", "Linear Plot"])
 _, toggle_pop = st.columns([2,1])
 divide_by_pop = False
 toggled_once = False
@@ -111,3 +111,9 @@ elif nav_option == "Linear Plot":
     selected_cause_of_death = st.selectbox('Select Cause of Death', sorted(diseases))
     line_plot = create_line_plot(selected_country, selected_cause_of_death, df)
     st.plotly_chart(line_plot)   
+
+elif nav_option == "Pie Chart":
+    from pie_chart import create_pie_chart
+
+    pie_chart = create_pie_chart(diseases)
+    st.plotly_chart(pie_chart)   
