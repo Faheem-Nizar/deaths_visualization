@@ -39,14 +39,14 @@ if nav_option == "World Map":
     
     showdis, showgdp, showdoc, showlifeexp = st.columns(4)
     disease_to_show = st.selectbox('Select Cause of Death', sorted(df.columns[6:]))
-    variable_to_show = disease_to_show + "simple"
+    variable_to_show = disease_to_show
     df[variable_to_show] = df[disease_to_show]
     # if(divide_by_pop):
     #     df[variable_to_show] = df[variable_to_show] * 1000 / df["Population"]
 
     with showdis:
         if st.button("Diseases", key="diseases"):
-            variable_to_show = disease_to_show + "simple"
+            variable_to_show = disease_to_show
             df[variable_to_show] = df[disease_to_show]
             # if(divide_by_pop):
             #     df[variable_to_show] = df[variable_to_show] * 1000 / df["Population"]
@@ -102,7 +102,7 @@ elif nav_option == "Scatter Plot":
     st.title('Communicable vs Non-Communicable Deaths')
     years = df['Year'].unique()
     selected_year = st.slider('Select Year', min_value=min(years), max_value=max(years), value=min(years))
-    scatter_plot = create_scatter_plot(selected_year, divide_by_pop, df)
+    scatter_plot = create_scatter_plot(selected_year, divide_by_pop, df, diseases)
     st.plotly_chart(scatter_plot)
 
 elif nav_option == "Linear Plot":

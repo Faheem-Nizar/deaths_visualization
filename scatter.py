@@ -6,7 +6,7 @@ import plotly.express as px
 df = pd.read_csv('cause_of_deaths.csv')
 
 # Function to create the scatter plot
-def create_scatter_plot(year, divide_by_pop, df):
+def create_scatter_plot(year, divide_by_pop, df, diseases):
     # Filter the data for the selected year
     year_data = df[df['Year'] == year]
 
@@ -14,24 +14,24 @@ def create_scatter_plot(year, divide_by_pop, df):
 
     # headings = sorted(df.columns[6:])
     with x_axis:
-        option1 = st.selectbox('Variable in X-axis', df.columns[6:])
+        x_axis_var = st.selectbox('Variable in X-axis', diseases)
 
     # Add another dropdown menu to the second column
     with y_axis:
-        option2 = st.selectbox('Variable in Y-axis', df.columns[6:])
+        y_axis_var = st.selectbox('Variable in Y-axis', diseases)
 
     # Calculate communicable and non-communicable deaths per 1000 population
-    year_data['communicable_per_1000'] = (year_data['total communicable deaths'] / year_data['Population']) * 1000
-    year_data['non_communicable_per_1000'] = (year_data['Total Deaths'] - year_data['total communicable deaths']) / year_data['Population'] * 1000
+    # year_data['communicable_per_1000'] = (year_data['total communicable deaths'] / year_data['Population']) * 1000
+    # year_data['non_communicable_per_1000'] = (year_data['Total Deaths'] - year_data['total communicable deaths']) / year_data['Population'] * 1000
 
     # Create the scatter plot
-    fig = px.scatter(year_data, x='communicable_per_1000', y='non_communicable_per_1000', hover_name='Country/Territory',
-                     hover_data=['communicable_per_1000', 'non_communicable_per_1000'],
-                     title=f'Communicable vs Non-Communicable Deaths per 1000 Population ({year})')
+    fig = px.scatter(year_data, x=x_axis_var, y=y_axis_var, hover_name='Country/Territory',
+                     hover_data=[x_axis_var, y_axis_var],
+                     title=f'{x_axis_var} vs {y_axis_var} Deaths per 1000 Population ({year})')
 
     # Update the layout
-    fig.update_layout(xaxis_title='Communicable Deaths per 1000',
-                      yaxis_title='Non-Communicable Deaths per 1000')
+    fig.update_layout(xaxis_title=f'{x_axis_var} Deaths per 1000',
+                      yaxis_title=f'{y_axis_var} Deaths per 1000')
 
     return fig
 
