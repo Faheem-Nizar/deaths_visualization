@@ -8,7 +8,7 @@ df = pd.read_csv('cause_of_deaths.csv')
 # Function to create the line plot
 def create_line_plot(selected_countries, cause_of_death):
     # Filter the data for the selected countries and cause of death
-    filtered_data = df[(df['Country/Territory'].isin(selected_countries)) & (df[cause_of_death].notnull())]
+    filtered_data = df[(df['Country/Territory'].isin(selected_countries)) & (df[cause_of_death].notnull()) & (df[cause_of_death] != "")]
 
     # Create the line plot
     fig = px.line(filtered_data, x='Year', y=cause_of_death, color='Country/Territory',
