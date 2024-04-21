@@ -11,6 +11,7 @@ st.sidebar.title("Navigation")
 nav_option = st.sidebar.radio("Select View", ["World Map", "Scatter Plot", "Linear Plot"])
 _, toggle_pop = st.columns([2,1])
 divide_by_pop = False
+toggled_once = False
 diseases = ["Meningitis","Alzheimer's Disease and Other Dementias", "Parkinson's Disease","Nutritional Deficiencies","Malaria","Drowning","Interpersonal Violence",
             "Maternal Disorders","HIV/AIDS","Drug Use Disorders","Tuberculosis","Cardiovascular Diseases","Lower Respiratory Infections","Neonatal Disorders",	
             "Alcohol Use Disorders","Self-harm","Exposure to Forces of Nature","Diarrheal Diseases","Environmental Heat and Cold Exposure","Neoplasms",
@@ -23,9 +24,10 @@ with toggle_pop:
     if(divide_by_pop):
         for col in diseases:
             divisor_col = 'Population'
+            toggled_once = True
             divisor = df[divisor_col]
             df[col] = df[col].div(divisor)*1000
-    else:
+    elif toggled_once:
         for col in diseases:
             divisor_col = 'Population'
             df[col] = df[col]*df[divisor_col]/1000
