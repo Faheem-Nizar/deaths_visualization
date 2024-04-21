@@ -105,12 +105,12 @@ elif nav_option == "Scatter Plot":
 
 elif nav_option == "Linear Plot":
     from linear import create_line_plot
-
+    
     st.title('Trend Analysis')
-    selected_country = st.selectbox('Select Country/Territory', sorted(df['Country/Territory'].unique()))
-    selected_cause_of_death = st.selectbox('Select Cause of Death', sorted(diseases))
-    line_plot = create_line_plot(selected_country, selected_cause_of_death, df)
-    st.plotly_chart(line_plot)   
+    selected_countries = st.multiselect('Select Countries/Territories', sorted(df['Country/Territory'].unique()))
+    selected_cause_of_death = st.selectbox('Select Cause of Death', sorted(df.columns[6:]))
+    line_plot = create_line_plot(selected_countries, selected_cause_of_death)
+    st.plotly_chart(line_plot)  
 
 elif nav_option == "Pie Chart":
     from pie_chart import create_pie_chart
