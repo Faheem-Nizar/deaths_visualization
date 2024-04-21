@@ -16,8 +16,8 @@ diseases = ["Meningitis","Alzheimer's Disease and Other Dementias", "Parkinson's
             "Maternal Disorders","HIV/AIDS","Drug Use Disorders","Tuberculosis","Cardiovascular Diseases","Lower Respiratory Infections","Neonatal Disorders",	
             "Alcohol Use Disorders","Self-harm","Exposure to Forces of Nature","Diarrheal Diseases","Environmental Heat and Cold Exposure","Neoplasms",
             "Conflict and Terrorism","Diabetes Mellitus","Chronic Kidney Disease","Poisonings","Protein-Energy Malnutrition","Road Injuries","Chronic Respiratory Diseases",
-            "Cirrhosis and Other Chronic Liver Diseases","Digestive Diseases","Fire, Heat, and Hot Substances","Acute Hepatitis","Total Deaths","total infectous deaths",
-            "total communicable deaths","Deaths due to unnatural causes", "Preventable Deaths",	"Deaths due to genetics"]
+            "Cirrhosis and Other Chronic Liver Diseases","Digestive Diseases","Fire, Heat, and Hot Substances","Acute Hepatitis","Total Deaths","Infectous deaths",
+            "Communicable deaths","Unnatural deaths","Preventable Deaths", "Genetic caused Deaths"]
 
 with toggle_pop:
     divide_by_pop = st.toggle('Deaths by 1000 people')
@@ -100,9 +100,7 @@ elif nav_option == "Scatter Plot":
     from scatter import create_scatter_plot
 
     st.title('Communicable vs Non-Communicable Deaths')
-    years = df['Year'].unique()
-    selected_year = st.slider('Select Year', min_value=min(years), max_value=max(years), value=min(years))
-    scatter_plot = create_scatter_plot(selected_year, divide_by_pop, df, diseases)
+    scatter_plot = create_scatter_plot(divide_by_pop, df, diseases)
     st.plotly_chart(scatter_plot)
 
 elif nav_option == "Linear Plot":
