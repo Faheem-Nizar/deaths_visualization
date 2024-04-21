@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Read the data from the Excel file
-df = pd.read_excel('your_file.xlsx')
+df = pd.read_csv('cause_of_deaths.csv')
 
 # Mapping of countries to continents
 country_to_continent = {
@@ -49,7 +49,7 @@ country_to_continent = {
     'Cuba': 'North America',
     'Cyprus': 'Asia',
     'Czechia': 'Europe',
-    'Côte d'Ivoire': 'Africa',
+    'Côte d\'Ivoire': 'Africa',
     'Democratic People\'s Republic of Korea': 'Asia',
     'Democratic Republic of the Congo': 'Africa',
     'Denmark': 'Europe',
@@ -202,8 +202,26 @@ country_to_continent = {
 # Add a new column 'Continent' based on the mapping
 df['Continent'] = df['Country/Territory'].map(country_to_continent)
 
-# Group the data by continent and sum the population and other columns
-aggregated_df = df.groupby('Continent').sum().reset_index()
+sum_cols = [
+    'Meningitis', 'Alzheimer\'s Disease and Other Dementias', 'Parkinson\'s Disease', 'Nutritional Deficiencies', 'Malaria','Drowning', 'Interpersonal Violence',	'Maternal Disorders',	'HIV/AIDS',	'Drug Use Disorders',	'Tuberculosis',	'Cardiovascular Diseases',	'Lower Respiratory Infections',	'Neonatal Disorders',	'Alcohol Use Disorders',	'Self-harm', 'Exposure to Forces of Nature',	'Diarrheal Diseases',	'Environmental Heat and Cold Exposure',	'Neoplasms',	'Conflict and Terrorism',	'Diabetes Mellitus',	'Chronic Kidney Disease',	'Poisonings',	'Protein-Energy Malnutrition',	'Road Injuries',	'Chronic Respiratory Diseases',	'Cirrhosis and Other Chronic Liver Diseases',	'Digestive Diseases',	'Fire, Heat, and Hot Substances',	'Acute Hepatitis',	'Total Deaths',	'Population',	'total infectous deaths',	'total communicable deaths',	'Deaths due to unnatural causes',	'Preventable Deaths',	'Deaths due to genetics'
+]
 
-# Write the aggregated data to a new Excel file
-aggregated_df.to_excel('aggregated_data.xlsx', index=False)
+# List of columns to take mean
+mean_cols = ['Physicains per 1000', 'death per 1000']
+
+# Group by Continent and Year, then aggregate the data with sum and mean
+grouped = df.groupby(['Continent', 'Year']).agg({
+    **{col: 'sum' for col in sum_cols},  # Sum for sum_cols
+    **{col: 'mean' for col in mean_cols}  # Mean for mean_cols
+})
+
+# Reset index to flatten the grouped DataFrame
+grouped.reset_index(inplace=True)
+
+# Specify the output CSV file path
+output_file_path = 'output_aggregated_data.csv'
+
+# Write the aggregated data to a new CSV file
+grouped.to_csv(output_file_path, index=False)
+
+print(f"Aggregated data saved to {output_file_path}")
