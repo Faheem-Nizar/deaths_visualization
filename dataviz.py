@@ -4,11 +4,12 @@ import pandas as pd
 import streamlit as st
 
 
-df = pd.read_csv('cause_of_deaths.csv')
+df = pd.read_csv('./dataset/cause_of_deaths.csv')
+df_pc = pd.read_csv('./dataset/output_aggregated_data.csv')
 
 # Sidebar navigation
 st.sidebar.title("Navigation")
-nav_option = st.sidebar.radio("Select View", ["World Map", "Scatter Plot", "Pie Chart", "Linear Plot"])
+nav_option = st.sidebar.radio("Select View", ["World Map", "Disease Comparisons", "Continent-Wise", "Trend Analysis"])
 _, toggle_pop = st.columns([2,1])
 divide_by_pop = False
 toggled_once = False
@@ -33,33 +34,33 @@ with toggle_pop:
             df[col] = df[col]*df[divisor_col]/1000
 
 if nav_option == "World Map":
-    
+    st.title('World Map Visualization')
     # disease_to_show = "Malaria"
-    from world_map import create_world_map
+    from components.world_map import create_world_map
     
     world_map_fig = create_world_map(df, diseases)
     
     st.plotly_chart(world_map_fig, use_container_width=False, width=1000, height=800)
 
-elif nav_option == "Scatter Plot":
+elif nav_option == "Disease Comparisons":
     # Import the scatter plot code from scatter.py
-    from scatter import create_scatter_plot
+    from components.scatter import create_scatter_plot
 
-    st.title('Communicable vs Non-Communicable Deaths')
+    st.title('Disease Comparisons')
     scatter_plot = create_scatter_plot(divide_by_pop, df, diseases)
     st.plotly_chart(scatter_plot)
 
-elif nav_option == "Linear Plot":
-    from linear import create_line_plot
+elif nav_option == "Trend Analysis":
+    from components.linear import create_line_plot
     
     st.title('Trend Analysis')
     selected_countries = st.multiselect('Select Countries/Territories', sorted(df['Country/Territory'].unique()))
     selected_cause_of_death = st.selectbox('Select Cause of Death', sorted(df.columns[6:]))
-    line_plot = create_line_plot(selected_countries, selected_cause_of_death)
+    line_plot = create_line_plot(selected_countries, selected_cause_of_death, df)
     st.plotly_chart(line_plot)  
 
-elif nav_option == "Pie Chart":
-    from pie_chart import create_pie_chart
+elif nav_option == "Continent-Wise":
+    from components.pie_chart import create_pie_chart
 
-    pie_chart = create_pie_chart(diseases)
+    pie_chart = create_pie_chart(diseases, df_pc)
     st.plotly_chart(pie_chart)   
