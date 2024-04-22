@@ -13,11 +13,25 @@ m = folium.Map(location=[0, 0], zoom_start=2, tiles='cartodbpositron')
 
 cmap = plt.cm.get_cmap('Reds')
 
-min_gdp = world['GDP_PER_CA'].min()
-max_gdp = world['GDP_PER_CA'].max()
-selected_min_gdp, selected_max_gdp = st.slider("Select GDP per capita range to display the desired countries", min_gdp, max_gdp, (min_gdp, max_gdp))
+#min_gdp = world['GDP_PER_CA'].min()
+#max_gdp = world['GDP_PER_CA'].max()
+#selected_min_gdp, selected_max_gdp = st.slider("Select GDP per capita range to display the desired countries", min_gdp, max_gdp, (min_gdp, max_gdp))
 
-filtered_world = world[(world['GDP_PER_CA'] >= selected_min_gdp) & (world['GDP_PER_CA'] <= selected_max_gdp)]
+#filtered_world = world[(world['GDP_PER_CA'] >= selected_min_gdp) & (world['GDP_PER_CA'] <= selected_max_gdp)]
+
+columns = ['GDP_PER_CA', 'Population', 'LifeExpect', 'Physicains']  # Add your desired columns here
+
+selected_column = st.selectbox("Select desired parameter:", columns)
+
+# Get min and max values for selected column
+min_value = world[selected_column].min()
+max_value = world[selected_column].max()
+
+# Slider to select value range
+selected_min_value, selected_max_value = st.slider(f"Select range for {selected_column}:", min_value, max_value, (min_value, max_value))
+
+# Filter the dataframe based on selected column and value range
+filtered_world = world[(world[selected_column] >= selected_min_value) & (world[selected_column] <= selected_max_value)]
 
 
 # Add choropleth layer
