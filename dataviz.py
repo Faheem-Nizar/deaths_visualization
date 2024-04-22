@@ -2,14 +2,15 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import streamlit as st
-
+import geopandas as gpd
 
 df = pd.read_csv('./dataset/cause_of_deaths.csv')
 df_pc = pd.read_csv('./dataset/output_aggregated_data.csv')
+world = gpd.read_file("./two_var_visualization/updated_world.shp")
 
 # Sidebar navigation
 st.sidebar.title("Navigation")
-nav_option = st.sidebar.radio("Select View", ["World Map", "Disease Comparisons", "Continent-Wise", "Trend Analysis"])
+nav_option = st.sidebar.radio("Select View", ["World Map", "2 Variable World Map", "Disease Comparisons", "Continent-Wise", "Country-Wise Trend Analysis"])
 _, toggle_pop = st.columns([2,1])
 divide_by_pop = False
 toggled_once = False
@@ -42,6 +43,11 @@ if nav_option == "World Map":
     
     st.plotly_chart(world_map_fig, use_container_width=False, width=1000, height=800)
 
+elif nav_option == "2 Variable World Map":
+    from two_var_visualization.GDP_Deaths_Relationship_updated import plot_2_var_world_map
+    st.title('Visualize Deaths and Other Variables Simultaneously')
+    plot_2_var_world_map(world)
+
 elif nav_option == "Disease Comparisons":
     # Import the scatter plot code from scatter.py
     from components.scatter import create_scatter_plot
@@ -50,10 +56,10 @@ elif nav_option == "Disease Comparisons":
     scatter_plot = create_scatter_plot(divide_by_pop, df, diseases)
     st.plotly_chart(scatter_plot)
 
-elif nav_option == "Trend Analysis":
+elif nav_option == "Country-Wise Trend Analysis":
     from components.linear import create_line_plot
     
-    st.title('Trend Analysis')
+    st.title('Country-Wise Trend Analysis')
     selected_countries = st.multiselect('Select Countries/Territories', sorted(df['Country/Territory'].unique()))
     selected_cause_of_death = st.selectbox('Select Cause of Death', sorted(df.columns[6:]))
     line_plot = create_line_plot(selected_countries, selected_cause_of_death, df)
