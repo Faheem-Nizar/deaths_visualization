@@ -54,7 +54,7 @@ def plot_2_var_world_map(world):
         lat, lon = row.geometry.centroid.y, row.geometry.centroid.x
 
         # Get the value from the different column
-        marker_value = round(row['death per'], 2)
+        marker_value = round(row['Total Deat']/row['Population']*1000, 2)
         country = row['Country/Te'] 
 
         marker_color = mcolors.rgb2hex(cmap(marker_value/10))
