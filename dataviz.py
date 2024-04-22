@@ -4,7 +4,8 @@ import pandas as pd
 import streamlit as st
 
 
-df = pd.read_csv('cause_of_deaths.csv')
+df = pd.read_csv('./dataset/cause_of_deaths.csv')
+df_pc = pd.read_csv('./dataset/output_aggregated_data.csv')
 
 # Sidebar navigation
 st.sidebar.title("Navigation")
@@ -35,7 +36,7 @@ with toggle_pop:
 if nav_option == "World Map":
     
     # disease_to_show = "Malaria"
-    from world_map import create_world_map
+    from components.world_map import create_world_map
     
     world_map_fig = create_world_map(df, diseases)
     
@@ -43,23 +44,23 @@ if nav_option == "World Map":
 
 elif nav_option == "Scatter Plot":
     # Import the scatter plot code from scatter.py
-    from scatter import create_scatter_plot
+    from components.scatter import create_scatter_plot
 
     st.title('Communicable vs Non-Communicable Deaths')
     scatter_plot = create_scatter_plot(divide_by_pop, df, diseases)
     st.plotly_chart(scatter_plot)
 
 elif nav_option == "Linear Plot":
-    from linear import create_line_plot
+    from components.linear import create_line_plot
     
     st.title('Trend Analysis')
     selected_countries = st.multiselect('Select Countries/Territories', sorted(df['Country/Territory'].unique()))
     selected_cause_of_death = st.selectbox('Select Cause of Death', sorted(df.columns[6:]))
-    line_plot = create_line_plot(selected_countries, selected_cause_of_death)
+    line_plot = create_line_plot(selected_countries, selected_cause_of_death, df)
     st.plotly_chart(line_plot)  
 
 elif nav_option == "Pie Chart":
-    from pie_chart import create_pie_chart
+    from components.pie_chart import create_pie_chart
 
-    pie_chart = create_pie_chart(diseases)
+    pie_chart = create_pie_chart(diseases, df_pc)
     st.plotly_chart(pie_chart)   
