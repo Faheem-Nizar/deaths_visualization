@@ -60,4 +60,5 @@ def create_world_map(df, diseases):
             bgcolor= 'rgba(0,0,0,0)'
         ),
     )
+    
     return fig

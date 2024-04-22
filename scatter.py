@@ -61,12 +61,13 @@ def create_scatter_plot( divide_by_pop, df, diseases):
         text = ""
     # Create the scatter plot
     fig = px.scatter(year_data, x=x_axis_var, y=y_axis_var, hover_name='Country/Territory',
-                     hover_data=[x_axis_var, y_axis_var],
+                     hover_data=[x_axis_var, y_axis_var], size="Population", size_max=50,
+                     color="Continent", 
                      title=f'{x_axis_var} vs {y_axis_var} {d_text}{text}({selected_year})')
 
     # Update the layout
     fig.update_layout(xaxis_title=f'{x_axis_var} {d_text}{text}',
-                      yaxis_title=f'{y_axis_var} {d_text}{text}')
+                      yaxis_title=f'{y_axis_var} {d_text}{text}', width=700, height=700)
 
     return fig
 
