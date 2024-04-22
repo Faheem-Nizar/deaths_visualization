@@ -20,13 +20,13 @@ def create_world_map(df, diseases):
     with showgdp:
         if st.button("Diseases/GDP", key="diseases_w_gdp"):
             variable_to_show = disease_to_show + "/gdp"
-            df[variable_to_show] = df[disease_to_show]*(df["gdp per capita"])
+            df[variable_to_show] = df[disease_to_show]/(df["gdp per capita"])
             # if(divide_by_pop):
             #     df[variable_to_show] = df[variable_to_show] * 1000 / df["Population"]
     with showdoc:
         if st.button("Diseases/Doctors", key="diseases_w_doc"):
             variable_to_show = disease_to_show + "/doctors"
-            df[variable_to_show] = df[disease_to_show]*(df["Physicains per 1000"])
+            df[variable_to_show] = df[disease_to_show]/(df["Physicains per 1000"])
             # if(divide_by_pop):
             #     df[variable_to_show] = df[variable_to_show] * 1000 / df["Population"]
     with showlifeexp:
@@ -48,7 +48,6 @@ def create_world_map(df, diseases):
         hover_name='Country/Territory',
     )
     fig.update_layout(
-        title_text='Life Expectancy',
         margin=dict(l=0, r=0, b=0, t=25),
         width=900,
         height=600,
